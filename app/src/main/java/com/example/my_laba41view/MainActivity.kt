@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.app.AlertDialog
+import com.example.my_laba41view.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
