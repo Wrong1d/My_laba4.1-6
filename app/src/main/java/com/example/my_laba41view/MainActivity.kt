@@ -15,6 +15,8 @@ import android.app.AlertDialog
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+
     private val questions = listOf(
         "Canberra is the capital of Australia.",
         "The current president of the United States is Joe Biden.",
@@ -26,19 +28,10 @@ class MainActivity : AppCompatActivity() {
     private var currentIndex = 0
     private var score = 0
 
-    private lateinit var questionTextView: TextView
-    private lateinit var trueButton: Button
-    private lateinit var falseButton: Button
-    private lateinit var nextButton: Button
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        questionTextView = findViewById(R.id.question_text_view)
-        trueButton = findViewById(R.id.true_button)
-        falseButton = findViewById(R.id.false_button)
-        nextButton = findViewById(R.id.next_button)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         savedInstanceState?.let {
             currentIndex = it.getInt("currentIndex")
@@ -47,18 +40,18 @@ class MainActivity : AppCompatActivity() {
 
         updateQuestion()
 
-        trueButton.setOnClickListener { checkAnswer(true) }
-        falseButton.setOnClickListener { checkAnswer(false) }
+        binding.trueButton.setOnClickListener { checkAnswer(true) }
+        binding.falseButton.setOnClickListener { checkAnswer(false) }
 
-        nextButton.setOnClickListener {
+        binding.nextButton.setOnClickListener {
             currentIndex++
             if (currentIndex < questions.size) {
                 updateQuestion()
                 enableAnswerButtons()
             } else {
                 showFinalScore()
-                nextButton.isEnabled = false
-                nextButton.visibility = Button.INVISIBLE
+                binding.nextButton.isEnabled = false
+                binding.nextButton.visibility = Button.INVISIBLE
             }
         }
     }
@@ -79,17 +72,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateQuestion() {
-        questionTextView.text = questions[currentIndex]
+        binding.questionTextView.text = questions[currentIndex]
     }
 
     private fun disableAnswerButtons() {
-        trueButton.isEnabled = false
-        falseButton.isEnabled = false
+        binding.trueButton.isEnabled = false
+        binding.falseButton.isEnabled = false
     }
 
     private fun enableAnswerButtons() {
-        trueButton.isEnabled = true
-        falseButton.isEnabled = true
+        binding.trueButton.isEnabled = true
+        binding.falseButton.isEnabled = true
     }
 
     private fun showFinalScore() {
