@@ -12,6 +12,9 @@ import android.widget.Button
 import android.widget.TextView
 import android.app.AlertDialog
 import com.example.my_laba41view.databinding.ActivityMainBinding
+import android.content.Intent
+import android.widget.Toast
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,15 +31,19 @@ class MainActivity : AppCompatActivity() {
 
     private var currentIndex = 0
     private var score = 0
+    private var cheatCount = 0
+    private val maxCheats = 3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Восстанавливаем состояние при повороте экрана
         savedInstanceState?.let {
             currentIndex = it.getInt("currentIndex")
             score = it.getInt("score")
+            cheatCount = it.getInt("cheatCount", 0)
         }
 
         updateQuestion()
@@ -53,6 +60,18 @@ class MainActivity : AppCompatActivity() {
                 showFinalScore()
                 binding.nextButton.isEnabled = false
                 binding.nextButton.visibility = Button.INVISIBLE
+            }
+        }
+
+        binding.cheatButton.setOnClickListener {
+            if (cheatCount < maxCheats) {
+                val intent = Intent(this, CheatActivity::class.java).apply {
+                    putExtra("answer", correctAnswers[currentIndex])
+                }
+                startActivity(intent)
+                cheatCount++
+            } else {
+                Toast.makeText(this, "Подсказки закончились!", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -95,5 +114,7 @@ class MainActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
             .show()
+
     }
+
 }
