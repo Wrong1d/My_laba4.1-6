@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.app.AlertDialog
 
 
 class MainActivity : AppCompatActivity() {
@@ -54,6 +55,10 @@ class MainActivity : AppCompatActivity() {
             if (currentIndex < questions.size) {
                 updateQuestion()
                 enableAnswerButtons()
+            } else {
+                showFinalScore()
+                nextButton.isEnabled = false
+                nextButton.visibility = Button.INVISIBLE
             }
         }
     }
@@ -85,5 +90,16 @@ class MainActivity : AppCompatActivity() {
     private fun enableAnswerButtons() {
         trueButton.isEnabled = true
         falseButton.isEnabled = true
+    }
+
+    private fun showFinalScore() {
+        val message = "Вы правильно ответили на $score из ${questions.size} вопросов."
+        AlertDialog.Builder(this)
+            .setTitle("Результат")
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 }
